@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:layout_gravity="bottom"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <RadioGroup
+            android:id="@+id/alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/alarm_off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="알림 끄기"
+                />
+
+            <RadioButton
+                android:id="@+id/alarm_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="알림 켜기"
+                />
+        </RadioGroup>
+
+
+        <LinearLayout
+            android:gravity="left"
+            android:paddingLeft="20dp"
+            android:id="@+id/set_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bell_notice"
+            android:text="초인종이 눌리면 알림"
+            />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/door_notice"
+                android:text="문이 열리면 알림"
+                />
+
+
+        <LinearLayout
+            android:id="@+id/door_time_linear_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="문이 "
+                />
+
+            <EditText
+                android:id="@+id/door_edittext"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:maxLength="3"
+                android:inputType="number"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="초 이상 열려있으면 알림"
+                />
+
+            <Button
+                android:id="@+id/ok_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="확인"
+                android:onClick="ok_button"
+                />
+    </LinearLayout>
+        </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#FF0000FF"
+        android:layout_margin="10dp"
+        />
+
+    </LinearLayout>
+</LinearLayout>
