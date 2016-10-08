@@ -18,12 +18,6 @@ import okhttp3.RequestBody;
 class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     private static final String TAG = "MyFirebaseIIDService";
 
-    public static void main(String[] args) throws IOException {
-        FirebaseInstanceIDService example = new FirebaseInstanceIDService();
-        example.onTokenRefresh();
-        Log.e("Token","OK");
-    }
-
     // [START refresh_token]
     @Override
     public void onTokenRefresh() {
@@ -32,6 +26,7 @@ class FirebaseInstanceIDService extends FirebaseInstanceIdService {
         Log.d(TAG, "Refreshed token: " + token);
 
         // TODO: Implement this method to send any registration to your app's servers.
+
         sendRegistrationToServer(token);
     }
 
