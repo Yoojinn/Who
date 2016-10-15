@@ -47,13 +47,14 @@ public class RecentlyNotice extends Fragment{
         Context context = getActivity();
         mDbManager = DBManager.getInstance(context);
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("DoorOpenTime","2016-08-20 13:00");
-        contentValues.put("SensorOntime","2016-08-20 13:01");
-        mDbManager.insert(DBManager.TABLE,contentValues);
-        ContentValues contentValues2 = new ContentValues();
-        contentValues2.put("DoorbellRingTime","2016-09-20 13:01");
-        mDbManager.insert(DBManager.TABLE,contentValues);
+        //<임시 데이터>
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("DoorOpenTime","2016-08-20 13:00");
+//        contentValues.put("SensorOntime","2016-08-20 13:01");
+//        mDbManager.insert(DBManager.TABLE,contentValues);
+//        ContentValues contentValues2 = new ContentValues();
+//        contentValues2.put("DoorbellRingTime","2016-09-20 13:01");
+//        mDbManager.insert(DBManager.TABLE,contentValues);
 
         String[] Columns = new String[]{"_id","SensorOntime", "DoorOpenTime", "DoorbellRingPicture","DoorbellRingTime","UserCheck"};
         c = mDbManager.query("SensorInfo", Columns, "UserCheck='0'", null, null, null, null);

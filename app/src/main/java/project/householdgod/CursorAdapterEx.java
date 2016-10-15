@@ -50,7 +50,7 @@ public class CursorAdapterEx extends CursorAdapter{
         viewHolder.time = (TextView) itemLayout.findViewById(R.id.textview_time);
         viewHolder.log = (TextView) itemLayout.findViewById(R.id.textview_log);
 
-        viewHolder.imageView = (ImageView) itemLayout.findViewById(R.id.doorbell_man);
+      //  viewHolder.imageView = (ImageView) itemLayout.findViewById(R.id.doorbell_man);
         viewHolder.textView = (TextView) itemLayout.findViewById(R.id.textview_time);
 
         itemLayout.setTag(viewHolder);
@@ -106,8 +106,6 @@ public class CursorAdapterEx extends CursorAdapter{
 
         //-------------------------------------------------------------------
         //이름, 학번, 학과 데이터를 뷰에 적용
-
-
 
     }
 

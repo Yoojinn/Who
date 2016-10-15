@@ -2,8 +2,12 @@ package project.householdgod;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -53,8 +57,35 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
-        FirebaseInstanceId.getInstance().getToken();
+
+        ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        // wifi 또는 모바일 네트워크 어느 하나라도 연결이 되어있다면,
+        if (wifi.isConnected() || mobile.isConnected()) {
+            Log.e("wifi","connect");
+        } else {
+            Log.e("wifi","deconnect");
+
+            AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
+            alt_bld.setMessage("네트워크 연결이 안됩니다!").setCancelable(
+                    false).setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Action for 'Yes' Button
+                            finishAffinity();
+                        }
+                    });
+            AlertDialog alert = alt_bld.create();
+            // Title for AlertDialog
+            alert.setTitle("알림");
+            alert.show();
+        }
+
+        //실행이 안된당!!!!!!!
+//        FirebaseMessaging.getInstance().subscribeToTopic("news");
+//        FirebaseInstanceId.getInstance().getToken();
 
     }
 
@@ -119,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
                     rootView = inflater.inflate(R.layout.recently_notice_main, container, false);
                     break;
                 case 1:
-                    rootView = inflater.inflate(R.layout.all_information_check_main, container, false);
+                    //ToDo : all_information - > all_information_check_main
+                    rootView = inflater.inflate(R.layout.all_information, container, false);
 
                     break;
                 case 2:
@@ -155,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return new RecentlyNotice(mContext);
                 case 1:
-                    return new AllInformationCheck(mContext);
+                    return new ReceiveDataFromServer(mContext);
                 case 2:
                     return new NowState(mContext);
                 default:
