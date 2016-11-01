@@ -36,6 +36,8 @@ public class RecentlyNotice extends Fragment{
         mContext = context;
     }
 
+    public RecentlyNotice(){};
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                                                ViewGroup container, Bundle savedInstanceState) {
@@ -56,11 +58,11 @@ public class RecentlyNotice extends Fragment{
 //        contentValues2.put("DoorbellRingTime","2016-09-20 13:01");
 //        mDbManager.insert(DBManager.TABLE,contentValues);
 
-        String[] Columns = new String[]{"_id","SensorOntime", "DoorOpenTime", "DoorbellRingPicture","DoorbellRingTime","UserCheck"};
+        String[] Columns = new String[]{"_id","UserCheck", "KindOfSensor"," time"};
         c = mDbManager.query("SensorInfo", Columns, "UserCheck='0'", null, null, null, null);
 
         c.moveToFirst();
-        if(c.getCount()!=0){
+        if(c.getCount()!=0){ //데이터가 존재할 때만
             setListview();
         }
         else{

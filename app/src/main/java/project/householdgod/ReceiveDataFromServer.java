@@ -27,7 +27,7 @@ import java.util.HashMap;
 /**
  * Created by 10105-김유진 on 2016-10-11.
  */
-public class ReceiveDataFromServer extends Fragment {
+public class ReceiveDataFromServer{
     String myJSON;
 
     private static final String TAG_RESULTS="result";
@@ -41,53 +41,73 @@ public class ReceiveDataFromServer extends Fragment {
     ListView list;
     Context mContext;
 
-    public ReceiveDataFromServer(Context context){
-        mContext = context;
+    ReceiveDataFromServer(Context c){
+        mContext = c;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.all_information, null);
-        list = (ListView) view.findViewById(R.id.listview);
-        personList = new ArrayList<HashMap<String, String>>();
-        getData("http://yyjin1217.cafe24.com/sensorInfo/DBRow.php");
-
-        return view;
-    }
-
-
-    protected void showList(){
+    public void putDB() {
+        if(myJSON == null){ //myJSON이 null이면 데이터를 못가져왔다는 뜻.
+            return;
+        }
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
             peoples = jsonObj.getJSONArray(TAG_RESULTS);
 
-            for(int i=0;i<peoples.length();i++){
-                JSONObject c = peoples.getJSONObject(i);
-                String time = c.getString(TAG_TIME);
-                String kindOfSensor = c.getString(TAG_KIND_OF_SENSOR);
+            SPreferences sPreferences = new SPreferences(mContext);
+            int n =sPreferences.getValue("readedRow",0);
+            for (int i = 0; i < peoples.length(); i++) {
+                if(i >= n) {
+                    JSONObject c = peoples.getJSONObject(i);
+                    String time = c.getString(TAG_TIME);
+                    String kindOfSensor = c.getString(TAG_KIND_OF_SENSOR);
 
-                HashMap<String,String> persons = new HashMap<String,String>();
+                    HashMap<String, String> persons = new HashMap<String, String>();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("KindOfSensor", kindOfSensor);
+                    contentValues.put("time", time);
 
-                persons.put(TAG_TIME,time);
-                persons.put(TAG_KIND_OF_SENSOR,kindOfSensor);
-
-                personList.add(persons);
+                    DBManager dbManager = DBManager.getInstance(mContext);
+                    dbManager.insert(contentValues);
+                }
             }
-
-            ListAdapter adapter = new SimpleAdapter(
-                    mContext, personList, R.layout.door_list,
-                    new String[]{TAG_TIME,TAG_KIND_OF_SENSOR},
-                    new int[]{R.id.textview_time, R.id.textview_log}
-            );
-
-            list.setAdapter(adapter);
-
+            sPreferences.put("readedRow",peoples.length());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
+
+//    protected void showList(){
+//        try {
+//                    JSONObject jsonObj = new JSONObject(myJSON);
+//                    peoples = jsonObj.getJSONArray(TAG_RESULTS);
+//
+//                    for(int i=0;i<peoples.length();i++){
+//                        JSONObject c = peoples.getJSONObject(i);
+//                        String time = c.getString(TAG_TIME);
+//                        String kindOfSensor = c.getString(TAG_KIND_OF_SENSOR);
+//
+//                        HashMap<String,String> persons = new HashMap<String,String>();
+//
+//                persons.put(TAG_TIME,time);
+//                persons.put(TAG_KIND_OF_SENSOR,kindOfSensor);
+//
+//                personList.add(persons);
+//            }
+//
+//            ListAdapter adapter = new SimpleAdapter(
+//                    mContext, personList, R.layout.door_list,
+//                    new String[]{TAG_TIME,TAG_KIND_OF_SENSOR},
+//                    new int[]{R.id.textview_time, R.id.textview_log}
+//            );
+//
+//            list.setAdapter(adapter);
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     public void getData(String url){
         class GetDataJSON extends AsyncTask<String, Void, String>{
@@ -120,7 +140,8 @@ public class ReceiveDataFromServer extends Fragment {
             @Override
             protected void onPostExecute(String result){
                 myJSON=result;
-                showList();
+                putDB();
+                //showList();
             }
         }
         GetDataJSON g = new GetDataJSON();

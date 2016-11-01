@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class DBManager {
     //DB명, 테이블명, DB버전 정보 정의
     //==============================================================================
-    static final String DB_SensorInfo ="SensorInfo.db";
+    static final String DB_WHO ="WHO.db";
     static final String TABLE = "SensorInfo";
     static final int DB_VERSION = 1;
     //==============================================================================
@@ -37,23 +37,28 @@ public class DBManager {
     private DBManager(Context context) {
         mContext = context;
 
-            mDatabase = context.openOrCreateDatabase(DB_SensorInfo, Context.MODE_PRIVATE, null);
+        mDatabase = context.openOrCreateDatabase(DB_WHO, Context.MODE_PRIVATE, null);
         //==============================================================================
         mDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" + "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                             "UserCheck        INTEGER DEFAULT 0,"+ //사용자가 확인했는지 안했는지 체크
-                            "DoorOpenTime   TEXT ,"+ //문이 열린 시각
-                            "SensorOntime   TEXT ,"+ //센서가 On된 시각
-                            "DoorbellRingPicture    TEXT,"+ //초인종을 누른 사람의 사진
-                            "DoorbellRingTime   TEXT);" //초인종이 눌린 시각
+                            "KindOfSensor   TEXT ,"+ //센서의 종류
+                            "picture    TEXT, " +//초인종 사진 저장 경로
+                            "time   TEXT " +
+                            ");" //센서 시간
+                             /*  KindOfSensor / time / DoorBellRingPicture
+                                1 : 전원 ON
+                                2 : 전원 OFF
+                                3 : 문 열림
+                                4 : 문 닫힘
+                                5 : 센서등 켜짐
+                                6 : 초인종 초인종 사진 */
+
         );
     }
 
-    public long insert(String table, ContentValues addRowValue)
+    public long insert(ContentValues addRowValue)
     {
-        if(table.equals("Words")){
-            addRowValue.put("correct_num",0);
-        }
-        return mDatabase.insert(table,null,addRowValue);
+        return mDatabase.insert(TABLE,null,addRowValue);
     }
 
     public Cursor query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy){
@@ -71,11 +76,6 @@ public class DBManager {
 
     public int update(String table, ContentValues updateRowValue, String whereClause, String[] whereArgs){
         return mDatabase.update(table, updateRowValue,whereClause,whereArgs);
-    }
-
-    public Cursor searchAutocomplete(String table, String updateRowValue,String whereClause){
-        whereClause = "'%"+whereClause+"%'";
-        return mDatabase.rawQuery("SELECT * FROM " + table + " WHERE "+ updateRowValue + " LIKE "+whereClause+";", null);
     }
 
 }

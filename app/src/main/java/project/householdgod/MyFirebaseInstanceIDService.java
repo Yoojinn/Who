@@ -15,7 +15,7 @@ import okhttp3.RequestBody;
 /**
  * Created by 10105-김유진 on 2016-10-05.
  */
-class FirebaseInstanceIDService extends FirebaseInstanceIdService {
+class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private static final String TAG = "MyFirebaseIIDService";
 
     // [START refresh_token]
@@ -40,7 +40,7 @@ class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         //request
         Request request = new Request.Builder()
-                .url("http://yyjin1217.cafe24.com/sensorInfo/config.php")
+                .url("http://yyjin1217.cafe24.com/sensorInfo/register.php")
                 .post(body)
                 .build();
         try {

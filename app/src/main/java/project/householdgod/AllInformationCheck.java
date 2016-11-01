@@ -44,7 +44,7 @@ public class AllInformationCheck extends Fragment {
         textView = (TextView)view.findViewById(R.id.all_information_textview);
         listView = (ListView)view.findViewById(R.id.all_information_listview);
 
-        String[] Columns = new String[]{"_id","SensorOntime", "DoorOpenTime", "DoorbellRingPicture","DoorbellRingTime","UserCheck"};
+        String[] Columns = new String[]{"_id","UserCheck", "KindOfSensor"," time"};
         c = mDbManager.query("SensorInfo", Columns,null, null, null, null, null);
 
         if(c.getCount()!=0){

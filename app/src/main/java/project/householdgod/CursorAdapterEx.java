@@ -41,7 +41,6 @@ public class CursorAdapterEx extends CursorAdapter{
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
         //새로운 아이템 뷰 생성---------------------------------------------------
-
         View itemLayout = mLayoutInflater.inflate(R.layout.door_list,null);
         //------------------------------------------------------------------------
         //아이쳄에 뷰 홀더 설정---------------------------------------------------
@@ -65,47 +64,30 @@ public class CursorAdapterEx extends CursorAdapter{
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault());
         //--------------------------------------------------------------------
-        //현재 커서 위치에 문열린 시각, 센서감지시각, 초인종누른사람, 초인종 울린 시각을 가져온다.
-        try{
-            String doorOpenTime = cursor.getString(cursor.getColumnIndex("DoorOpenTime"));
-            String sensorOntime= cursor.getString(cursor.getColumnIndex("SensorOntime")); viewHolder.time.setText(doorOpenTime);
-            viewHolder.time.setText(doorOpenTime);
-            try {
-                Date doorTime = dateFormat.parse(doorOpenTime);
-                Date sensorTime = dateFormat.parse(sensorOntime);
+        //현재 커서 위치에 센서종류, 센서가 on된 시간을 가져온다.
+        String doorOpenTime = cursor.getString(cursor.getColumnIndex("KindOfSensor"));
+        String sensorOntime= cursor.getString(cursor.getColumnIndex("time"));
 
-                //센서 인식후, 문열림 : 누군가 나감
-                if(doorTime.after(sensorTime)){
-                    viewHolder.log.setText("누군가 나갔습니다.");
-                }
-                //문이 먼저 열리고 센서인식 : 누군가 들어옴
-                else{
-                    viewHolder.log.setText("누군가 들어왔습니다.");
-                }
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        if(doorOpenTime.equals("1")){ //전원 On
+            viewHolder.log.setText("센서의 전원이 켜졌습니다.");
         }
-        catch (Exception e){
-
-            String doorbellRingPicture = cursor.getString(cursor.getColumnIndex("DoorbellRingPicture"));
-            String doorbellRingTime = cursor.getString(cursor.getColumnIndex("DoorbellRingTime"));
-
-            //이미지 불러오기---------------------------------------------------------------------------------
-//Todo :            int resID = mContext.getResources().getIdentifier(doorbellRingPicture, "drawable", mContext.getPackageName());
-            //---------------------------------------------------------------------------------
-            //이미지는 파일네임 것-----------------------------------------------------
-            //Todo : viewHolder.imageView.setImageResource(resID); // 이미지뷰의 이미지를 설정한다;
-            viewHolder.textView.setText(doorbellRingPicture);
-
-            //viewHolder.imageView.setImageDrawable("URL");-------------------------------------
+        else if(doorOpenTime.equals("2")){ //전원 Off
+            viewHolder.log.setText("센서의 전원이 꺼졌습니다.");
+        }
+        else if(doorOpenTime.equals("3")){ //문 열림
+            viewHolder.log.setText("문이 열렸습니다.");
+        }
+        else if(doorOpenTime.equals("4")){ //문 닫힘
+            viewHolder.log.setText("문이 닫혔습니다.");
+        }
+        else if(doorOpenTime.equals("5")){ //센서등 켜짐
+            viewHolder.log.setText("센서등이 켜졌습니다.");
+        }
+        else if(doorOpenTime.equals("6")) {  //초인종, 초인종 사진
             viewHolder.log.setText("초인종이 눌렸습니다.");
-            viewHolder.time.setText(doorbellRingTime);
+            //ToDo : viewHolder.imageView();
         }
-
-        //-------------------------------------------------------------------
-        //이름, 학번, 학과 데이터를 뷰에 적용
+        viewHolder.time.setText(sensorOntime);
 
     }
 

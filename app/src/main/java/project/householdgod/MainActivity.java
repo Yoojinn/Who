@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
+//      네트워크 연결확인============================================================================================
         ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -65,36 +66,20 @@ public class MainActivity extends AppCompatActivity {
         // wifi 또는 모바일 네트워크 어느 하나라도 연결이 되어있다면,
         if (wifi.isConnected() || mobile.isConnected()) {
             Log.e("wifi","connect");
+            ReceiveDataFromServer receiveDataFromServer = new ReceiveDataFromServer(getApplicationContext());
+            //ToDo : 서버 주소 입력
+            receiveDataFromServer.getData("http://yyjin1217.cafe24.com/sensorInfo/DBRow.php");
         } else {
             Log.e("wifi","deconnect");
-
-            AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-            alt_bld.setMessage("네트워크 연결이 안됩니다!").setCancelable(
-                    false).setPositiveButton("Yes",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // Action for 'Yes' Button
-                            finishAffinity();
-                        }
-                    });
-            AlertDialog alert = alt_bld.create();
-            // Title for AlertDialog
-            alert.setTitle("알림");
-            alert.show();
+            Toast.makeText(this,"네트워크 연결이 되지 않습니다.\n"+"최신 정보가 아닙니다."
+                            ,Toast.LENGTH_SHORT).show();
         }
 
-        //실행이 안된당!!!!!!!
-//        FirebaseMessaging.getInstance().subscribeToTopic("news");
-//        FirebaseInstanceId.getInstance().getToken();
+//      ============================================================================================================
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        FirebaseInstanceId.getInstance().getToken();
 
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -140,9 +125,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            FirebaseInstanceIDService example = new FirebaseInstanceIDService();
+            MyFirebaseInstanceIDService example = new MyFirebaseInstanceIDService();
             example.onTokenRefresh();
-            Log.e("Token","OK");
             View rootView;
 
             switch (getArguments().getInt(ARG_SECTION_NUMBER)){
@@ -150,8 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     rootView = inflater.inflate(R.layout.recently_notice_main, container, false);
                     break;
                 case 1:
-                    //ToDo : all_information - > all_information_check_main
-                    rootView = inflater.inflate(R.layout.all_information, container, false);
+                    rootView = inflater.inflate(R.layout.all_information_check_main, container, false);
 
                     break;
                 case 2:
@@ -187,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return new RecentlyNotice(mContext);
                 case 1:
-                    return new ReceiveDataFromServer(mContext);
+                    return new AllInformationCheck(mContext);
                 case 2:
                     return new NowState(mContext);
                 default:

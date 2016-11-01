@@ -40,7 +40,7 @@ public class NowState extends Fragment{
         doorTextView = (TextView)view.findViewById(R.id.door_text_view);
         bellTextView = (TextView)view.findViewById(R.id.bell_text_view);
 
-        doorTextView.setText("123456789");
+        doorTextView.setText("123456789"); //이거 지우면 왜 안될까?
         mDBManager = DBManager.getInstance(mContext);
 
 //        if(){ //문이 열려있으면
@@ -51,27 +51,32 @@ public class NowState extends Fragment{
         //imageView.setImageDrawable(getResources().getDrawable(R.drawable.close_door));
 //        }
 
-        String[] Columns = new String[]{"_id","SensorOntime", "DoorOpenTime", "DoorbellRingPicture","DoorbellRingTime","UserCheck"};
-        Cursor c = mDBManager.query("SensorInfo", Columns, "SensorOntime!=null",null,null,null,null);
-        c.moveToLast();
+        String[] Columns = new String[]{"UserCheck", "KindOfSensor"," time"};
 
 //        Log.e("Time",c.getString(c.getColumnIndex("DoorOpenTime")));
 //        Log.e("Time",c.getString(c.getColumnIndex("DoorbellRingTime")));
         try{
-            doorTextView.setText(c.getString(c.getColumnIndex("DoorOpenTime")));
+            Cursor c = mDBManager.query(DBManager.TABLE, Columns, "KindOfSensor==3 or KindOfSensor==4",null,null,null,null);
+            c.moveToLast();
+
+            doorTextView.setText(c.getString(c.getColumnIndex("time")));
         }
         catch (Exception e){
             doorTextView.setText("데이터가 없습니다.");
         }
-        c = mDBManager.query("SensorInfo",Columns,"DoorbellRingTime IS NOT NULL",null,null,null,null);
-        c.moveToLast();
+
 
         try{
-            doorTextView.setText(c.getString(c.getColumnIndex("DoorbellRingTime")));
+            Cursor c = mDBManager.query("SensorInfo",Columns,"KindofSensor==6",null,null,null,null);
+            c.moveToLast();
+            doorTextView.setText(c.getString(c.getColumnIndex("time")));
         }
         catch (Exception e){
             bellTextView.setText("데이터가 없습니다.");
         }
+
+        //ToDo : 알림 On, Off 나타냄
+        //ToDo : 초인종 밖 스트리밍
 
         return view;
     }
