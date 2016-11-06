@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         if (wifi.isConnected() || mobile.isConnected()) {
             Log.e("wifi","connect");
             ReceiveDataFromServer receiveDataFromServer = new ReceiveDataFromServer(getApplicationContext());
-            //ToDo : 서버 주소 입력
             receiveDataFromServer.getData("http://yyjin1217.cafe24.com/sensorInfo/DBRow.php");
         } else {
             Log.e("wifi","deconnect");
