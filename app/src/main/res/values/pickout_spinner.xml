@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner">
+        <item>전체</item>
+        <item>문 열림/닫힘</item>
+        <item>초인종</item>
+    </string-array>
+</resources>
