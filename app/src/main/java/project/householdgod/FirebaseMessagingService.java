@@ -39,8 +39,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.close_door).setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher) )
-                .setContentTitle("누구야")
+                .setSmallIcon(R.drawable.home).setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.home) )
+                .setContentTitle("누구야!")
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri).setLights(000000255,500,2000)
@@ -52,7 +52,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         PowerManager.WakeLock wakelock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
         wakelock.acquire(5000);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        SPreferences sPreferences = new SPreferences(this);
+
+        //'설정'에서 알람을 받는 경우만
+        if(sPreferences.getValue("Alarm",false))
+        {
+            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        }
     }
 }
 
