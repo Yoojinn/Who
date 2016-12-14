@@ -55,9 +55,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         SPreferences sPreferences = new SPreferences(this);
 
         //'설정'에서 알람을 받는 경우만
-        if(sPreferences.getValue("Alarm",false))
-        {
-            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        if(sPreferences.getValue("Alarm",true))
+        { /* ID of notification */
+            notificationManager.notify(0, notificationBuilder.build());
         }
     }
 }

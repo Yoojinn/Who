@@ -3,13 +3,16 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/all_linear_layout">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:background="#d9d6d6"
+        android:layout_height="40dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_gravity="center"
             >
             <CheckBox
                 android:id="@+id/all_check_box"
@@ -21,10 +24,19 @@
                 android:layout_height="wrap_content"
                 android:text="전체선택"/>
         </LinearLayout>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true">
+
+        </Spinner>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+        >
             <Button
                 android:onClick="selectClear"
                 android:id="@+id/check_clear_button"
@@ -37,11 +49,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <Button
+                android:background="@drawable/waste"
                 android:onClick="deleteButton"
                 android:id="@+id/delete_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="삭제"/>
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
+                />
         </LinearLayout>
 
     </LinearLayout>

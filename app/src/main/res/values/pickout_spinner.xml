@@ -2,7 +2,9 @@
 <resources>
     <string-array name="spinner">
         <item>전체</item>
+        <item>전원 ON/OFF</item>
         <item>문 열림/닫힘</item>
+        <item>센서등 켜짐</item>
         <item>초인종</item>
     </string-array>
 </resources>

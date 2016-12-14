@@ -34,9 +34,7 @@ public class SPreferences {
 
         editor.putBoolean(key, value);
         editor.commit();
-    }
-
-    public void put(String key, int value) {
+    }    public void put(String key, int value) {
         SharedPreferences pref = mContext.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
 

@@ -4,8 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.BLACK);
+        }
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -60,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
 
 //      네트워크 연결확인============================================================================================
         ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo mobile = manager. getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         // wifi 또는 모바일 네트워크 어느 하나라도 연결이 되어있다면,
         if (wifi.isConnected() || mobile.isConnected()) {
             Log.e("wifi","connect");
             ReceiveDataFromServer receiveDataFromServer = new ReceiveDataFromServer(getApplicationContext());
-            receiveDataFromServer.getData("http://yyjin1217.cafe24.com/sensorInfo/DBRow.php");
+            receiveDataFromServer.getData("http://yyjin1217.cafe24.com/sensorInfo/DBrow.php");
         } else {
             Log.e("wifi","deconnect");
             Toast.makeText(this,"네트워크 연결이 되지 않습니다.\n"+"최신 정보가 아닙니다."
